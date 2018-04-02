@@ -476,7 +476,10 @@ shopping.to_csv("c:/python/shopping.csv", mode='w',encoding = 'utf-8')
 
 
 """
-    
+ 
+# 1st code
+
+
 shopping_title = []
 shopping_text = []
 for i in range(1,100):
