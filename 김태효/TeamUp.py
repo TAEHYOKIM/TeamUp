@@ -31,15 +31,84 @@ df = DataFrame(Series(res), columns = ['art'])
 df
 
 
-DataFrame([res.values()])
-#    for j in txt:
-#        if j[1] == 'Noun':
-#            lst.append(j[0])
-res  # dict
-df = DataFrame(Series(res))
-df.columns = ['art']
-df
+import numpy as np
 
-t.morphs('아버지가 방에 들어가신다.')  # 형태소 
-t.nouns('아버지가 방에 들어가신다.')
-t.pos('아버지가 방에 들어가신다.') # 형태소(세부적)
+def cosineDist(a,b):
+    inner_ab = a.dot(b)
+    norm_a = np.sqrt(a.dot(a))
+    norm_b = np.sqrt(b.dot(b))
+    
+    return inner_ab/(norm_a*norm_b)
+
+a = np.array([1,0])
+b = np.array([2,3])
+
+cosineDist(a,b)
+
+=====
+# 사용된 모든 형태소 목록만드는 클래스?
+import numpy as np
+
+class Vocab:
+    def __init__(self):
+        self.vector = {}
+    
+    def add(self,tokens):
+        for token in tokens:
+            if token not in self.vector and not token.isspace() and token != '':
+                self.vector[token] = len(self.vector)
+    
+    def indexOf(self,vocab):
+        return self.vector[vocab]
+    
+    def size(self):
+        return len(self.vector)
+    
+    def at(self,i): # get ith word in the vector
+        return list(self.vector)[i]
+    
+    # vectorize : dict -> np.array
+    
+    def vectorize(self,word):
+        v = [0 for i in range(self.size())]
+        if word in self.vector:
+            v[self.indexOf(word)]=1
+        else:
+            print("<ERROR>Word\'"+word+"\'Not Found")
+        return np.array(v)
+    
+    def save(self,filename):
+        with open(filename,'w',encoding='utf-8') as f:
+            for word in self.vector:
+                f.write(word+'\n')
+                
+    def load(self,filename):
+        with open(filename,'r',encoding='utf-8') as f:
+            lines = f.readlines()
+            bow = [i[:-1] for i in lines]
+            self.add(bow)
+    
+    def __str__(self):
+        s = "Vocab("
+        for word in self.vector:
+            s += (str(self.vector[word]) + ':' + word + ',')
+        if self.size() != 0:
+            s = s[:-2]
+        s += ")"
+        return s
+        
+from nltk.corpus import stopwords
+
+# str -> nltk.Text로 리턴하는 함수
+
+def preprocess(input_str):
+    input_str = input_str.lower()
+    tokens = nltk.word_tokenize(input_str)
+    stpwrds = set(stopwords.words())
+
+
+
+
+
+
+
