@@ -96,15 +96,25 @@ class Vocab:
             s = s[:-2]
         s += ")"
         return s
-        
+import nltk        
 from nltk.corpus import stopwords
 
 # str -> nltk.Text로 리턴하는 함수
 
-def preprocess(input_str):
-    input_str = input_str.lower()
-    tokens = nltk.word_tokenize(input_str)
-    stpwrds = set(stopwords.words())
+def preprocess(x):
+    #x = x.lower()
+    tokens = nltk.word_tokenize(x)
+    stop = set(stopwords.words('english'))
+    tokens = [i for i in tokens if i not in stop and i.isalpha()]
+    stemmer = nltk.stem.porter.PorterStemmer()
+    stems = [stemmer.stem(i) for i in tokens]
+    text = nltk.Text(stems)
+    return text
+
+
+nltk.download('punkt')
+for i in art['제목'].values:
+    print(preprocess(i))
 
 
 
