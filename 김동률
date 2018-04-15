@@ -1,0 +1,80 @@
+
+import pandas as pd
+from pandas import Series, DataFrame
+
+art = pd.read_csv('c:/python/art.csv')
+
+art.columns = ['idx','제목','삭제','내용']
+art = art[['제목','내용']]
+art
+
+import numpy as np
+from konlpy.tag import Twitter
+t= Twitter()
+
+
+dic={}
+for i in range(len(art['제목'])):
+    dic[i]= t.morphs(art['제목'][i])
+
+df=DataFrame(Series(dic))
+df.loc[0,]
+
+###########논문###############
+def cosin_similarity_analyze(a, b):
+    cmp_len = len(a)
+    if len(b) < cmp_len:
+        cmp_len = len(b)
+        
+from sklearn.metrics.pairwise import cosine_similarity
+
+#########코사인 함수##################
+import numpy as np
+import math
+def cos(a,b):
+    mul = (a.dot(b))
+    x = math.sqrt(a.dot(a))
+    y = math.sqrt(b.dot(b))
+    result = mul / (x * y)
+    return result
+
+####################전처리###################
+
+import nltk
+from nltk.corpus import stopwords
+
+# preprocess = str -> nltk.Text
+
+def preprocess(x):
+    x = x.lower()
+    tokens = nltk.word_tokenize(x)
+    stop = set(stopwords.words('english'))
+    tokens = [i for i in tokens if i not in stop and i.isalpha()]
+    stemmer = nltk.stem.porter.PorterStemmer()
+    stems = [stemmer.stem(i) for i in tokens]
+    text = nltk.Text(stems)
+    return text
+
+    
+import nltk
+nltk.download('punkt')
+
+preprocess('나는 사과를 좋아하는데, 영희는 사과만 싫어한다.')
+1.isalpha()
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
